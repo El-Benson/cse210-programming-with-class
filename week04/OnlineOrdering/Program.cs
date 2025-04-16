@@ -19,13 +19,11 @@ namespace ProductOrderingSystem
             _country = country;
         }
 
-        // Method to check if the address is in the USA
         public bool IsInUSA()
         {
             return _country.Equals("USA", StringComparison.OrdinalIgnoreCase);
         }
 
-        // Method to return a full address as a string
         public string GetFullAddress()
         {
             return $"{_streetAddress}\n{_city}, {_state}\n{_country}";
@@ -44,19 +42,16 @@ namespace ProductOrderingSystem
             _address = address;
         }
 
-        // Method to check if the customer lives in the USA
         public bool LivesInUSA()
         {
             return _address.IsInUSA();
         }
 
-        // Method to get the customer's name
         public string GetName()
         {
             return _name;
         }
 
-        // Method to get the address
         public Address GetAddress()
         {
             return _address;
@@ -79,13 +74,11 @@ namespace ProductOrderingSystem
             _quantity = quantity;
         }
 
-        // Method to calculate the total cost of the product
         public double GetTotalCost()
         {
             return _price * _quantity;
         }
 
-        // Method to get the product's details
         public string GetProductInfo()
         {
             return $"{_name} (ID: {_productId})";
@@ -106,44 +99,37 @@ namespace ProductOrderingSystem
             _products = new List<Product>();
         }
 
-        // Method to add a product to the order
         public void AddProduct(Product product)
         {
             _products.Add(product);
         }
 
-        // Method to calculate the total cost of the order
         public double CalculateTotalCost()
         {
             double total = 0;
-
-            foreach (var product in _products)
+            foreach (Product product in _products)
             {
                 total += product.GetTotalCost();
             }
-
-            // Add shipping cost
             total += _customer.LivesInUSA() ? DomesticShippingCost : InternationalShippingCost;
-
             return total;
         }
 
-        // Method to get packing label
         public string GetPackingLabel()
         {
-            var packingLabel = "Packing Label:\n";
-            foreach (var product in _products)
+            string packingLabel = "Packing Label:\n";
+            foreach (Product product in _products)
             {
                 packingLabel += product.GetProductInfo() + "\n";
             }
             return packingLabel.Trim();
         }
 
-        // Method to get shipping label
         public string GetShippingLabel()
         {
-            var shippingLabel = "Shipping Label:\n";
-            shippingLabel += $"{_customer.GetName()}\n{_customer.GetAddress().GetFullAddress()}";
+            string shippingLabel = "Shipping Label:\n";
+            shippingLabel += _customer.GetName() + "\n";
+            shippingLabel += _customer.GetAddress().GetFullAddress();
             return shippingLabel.Trim();
         }
     }
@@ -179,7 +165,7 @@ namespace ProductOrderingSystem
             Console.WriteLine(order.GetPackingLabel());
             Console.WriteLine(order.GetShippingLabel());
             Console.WriteLine($"Total Price: ${order.CalculateTotalCost():0.00}");
-            Console.WriteLine(); // Blank line for separation
+            Console.WriteLine();
         }
     }
 }
