@@ -74,7 +74,6 @@ namespace YouTubeVideoTracker
             video3.AddComment(new Comment("Heidi", "Well explained."));
             video3.AddComment(new Comment("Ivan", "Fantastic content!"));
 
-   st
             videos.Add(video1);
             videos.Add(video2);
             videos.Add(video3);
@@ -86,12 +85,12 @@ namespace YouTubeVideoTracker
                 Console.WriteLine($"Length: {video.LengthInSeconds} seconds");
                 Console.WriteLine($"Number of Comments: {video.GetCommentCount()}");
                 Console.WriteLine("Comments:");
-                
+
                 foreach (var comment in video.GetComments())
                 {
                     Console.WriteLine($"- {comment.CommenterName}: {comment.Text}");
                 }
-                
+
                 Console.WriteLine(); // Blank line for separation
             }
         }
