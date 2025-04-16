@@ -4,7 +4,6 @@ using System.Threading;
 
 namespace MindfulnessApp
 {
-    
     abstract class MindfulnessActivity
     {
         protected string ActivityName;
@@ -24,7 +23,7 @@ namespace MindfulnessApp
         public virtual void EndActivity()
         {
             Console.WriteLine($"Good job! You have completed the {ActivityName} for {Duration} seconds.");
-            Pause(3);  
+            Pause(3);
         }
 
         protected void Pause(int seconds)
@@ -37,10 +36,9 @@ namespace MindfulnessApp
             Console.WriteLine();
         }
 
-        public abstract void PerformActivity();  // Must be implemented by subclasses
+        public abstract void PerformActivity();
     }
 
-    
     class BreathingActivity : MindfulnessActivity
     {
         public BreathingActivity()
@@ -52,21 +50,20 @@ namespace MindfulnessApp
         public override void PerformActivity()
         {
             StartActivity();
-            int halfDuration = Duration / 2;
+            int cycles = Duration / 6;
 
-            for (int i = 0; i < halfDuration; i++)
+            for (int i = 0; i < cycles; i++)
             {
                 Console.WriteLine("Breathe in...");
                 Pause(3);
                 Console.WriteLine("Breathe out...");
                 Pause(3);
-
+            }
 
             EndActivity();
         }
     }
 
-    
     class ReflectionActivity : MindfulnessActivity
     {
         private List<string> Prompts = new List<string>
@@ -102,8 +99,8 @@ namespace MindfulnessApp
         {
             StartActivity();
             Console.WriteLine(Prompts[random.Next(Prompts.Count)]);
+            int totalQuestions = Duration / 7;
 
-            int totalQuestions = Duration / 7;  // Roughly 7 seconds per question
             for (int i = 0; i < totalQuestions; i++)
             {
                 Console.WriteLine(Questions[random.Next(Questions.Count)]);
@@ -114,7 +111,6 @@ namespace MindfulnessApp
         }
     }
 
-    
     class ListingActivity : MindfulnessActivity
     {
         private List<string> Prompts = new List<string>
@@ -138,7 +134,7 @@ namespace MindfulnessApp
         {
             StartActivity();
             Console.WriteLine(Prompts[random.Next(Prompts.Count)]);
-            Pause(3); 
+            Pause(3);
 
             Console.WriteLine("Start listing items. Type 'done' to finish:");
             List<string> items = new List<string>();
@@ -153,10 +149,32 @@ namespace MindfulnessApp
         }
     }
 
+    static class QuoteGenerator
+    {
+        private static List<string> Quotes = new List<string>
+        {
+            "Peace begins with a smile. – Mother Teresa",
+            "Breathe. Let go. And remind yourself that this very moment is the only one you know you have for sure. – Oprah Winfrey",
+            "Mindfulness isn’t difficult, we just need to remember to do it. – Sharon Salzberg",
+            "You should sit in meditation for 20 minutes a day — unless you’re too busy. Then you should sit for an hour. – Zen proverb"
+        };
+
+        public static void ShowRandomQuote()
+        {
+            Random rand = new Random();
+            Console.WriteLine("\n🧘‍♀️ Daily Mindfulness Quote:");
+            Console.WriteLine($"\"{Quotes[rand.Next(Quotes.Count)]}\"\n");
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
         {
+            // 📝 Creative Enhancement:
+            // I added a "Daily Quote" feature that displays a random mindfulness quote after each activity.
+            // This adds motivation and inspiration to the user experience.
+
             while (true)
             {
                 Console.WriteLine("\nChoose an activity:");
@@ -181,13 +199,14 @@ namespace MindfulnessApp
                         activity = new ListingActivity();
                         break;
                     case "4":
-                        return;  
+                        return;
                     default:
                         Console.WriteLine("Invalid choice. Please select again.");
                         continue;
                 }
 
                 activity.PerformActivity();
+                QuoteGenerator.ShowRandomQuote(); // Show daily quote after activity
             }
         }
     }
